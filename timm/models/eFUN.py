@@ -28,7 +28,9 @@ def _cfg(url='', **kwargs):
 
 default_cfgs = {
     'eFUN': _cfg(),
-    'eFUN-L': _cfg()
+    'eFUN-L': _cfg(),
+    'eFUN-S': _cfg(),
+    'eFUN-S+': _cfg()
 }
 
 _DEBUG = False
@@ -124,11 +126,12 @@ def _create_efun_model(model_kwargs, default_cfg, pretrained=False):
 
 
 def _gen_efun(variant, channel_multiplier=1.0, depth_multiplier=1.0, pretrained=False, **kwargs):
-    # arch_def = [
-    #     ['ir_r3_k5_s1_e4_c128_se0.25'],
-    #     ['ir_r6_k5_s2_e4_c160_se0.25'],
-    #     ['ir_r1_k3_s1_e6_c192_se0.25'],
-    # ]
+    variant_to_num_features = {
+        "eFUN": 1280,
+        "eFUN-L": 1280,
+        "eFUN-S": 1280,
+        "eFUN-S+": 960
+    }
     variant_to_arch = {
         "eFUN":
             [
@@ -142,13 +145,25 @@ def _gen_efun(variant, channel_multiplier=1.0, depth_multiplier=1.0, pretrained=
                 ['ir_r2_k5_s1_e5_c180_se0.25'],
                 ['ir_r5_k5_s2_e4_c180_se0.25'],
                 ['ir_r2_k3_s1_e6_c216_se0.25'],
+            ],
+        "eFUN-S":
+            [
+                ['ir_r3_k5_s1_e3_c120_se0.25'],
+                ['ir_r5_k5_s2_e4_c140_se0.25'],
+                ['ir_r1_k3_s1_e5_c192_se0.25'],
+            ],
+        "eFUN-S+":
+            [
+                ['ir_r3_k5_s1_e4_c96_se0.25'],
+                ['ir_r4_k5_s2_e4_c120_se0.25'],
+                ['ir_r1_k3_s1_e6_c192_se0.25'],
             ]
 
     }
     arch_def = variant_to_arch[variant]
     model_kwargs = dict(
         block_args=decode_arch_def(arch_def, depth_multiplier),
-        num_features=round_channels(1280, channel_multiplier, 8, None),
+        num_features=variant_to_num_features[variant],
         channel_multiplier=channel_multiplier,
         act_layer=resolve_act_layer(kwargs, 'swish'),
         norm_kwargs=resolve_bn_args(kwargs),
@@ -160,18 +175,35 @@ def _gen_efun(variant, channel_multiplier=1.0, depth_multiplier=1.0, pretrained=
 
 @register_model
 def efun(pretrained=False, **kwargs):
-    """ DCTEfficientNet-B0 """
+    """ eFUN """
     # NOTE for train, drop_rate should be 0.2, drop_path_rate should be 0.2
     model = _gen_efun(
         'eFUN', channel_multiplier=1.0, depth_multiplier=1.0, pretrained=pretrained, **kwargs)
     return model
 
 
-
 @register_model
 def efun_l(pretrained=False, **kwargs):
-    """ DCTEfficientNet-B0 """
-    # NOTE for train, drop_rate should be 0.2, drop_path_rate should be 0.2
+    """ eFUN-L """
+    # NOTE for train, drop_rate should be 0.3, drop_path_rate should be 0.3
     model = _gen_efun(
         'eFUN-L', channel_multiplier=1.0, depth_multiplier=1.0, pretrained=pretrained, **kwargs)
+    return model
+
+
+@register_model
+def efun_s(pretrained=False, **kwargs):
+    """ eFUN-S """
+    # NOTE for train, drop_rate should be 0.2, drop_path_rate should be 0.2
+    model = _gen_efun(
+        'eFUN-S', channel_multiplier=1.0, depth_multiplier=1.0, pretrained=pretrained, **kwargs)
+    return model
+
+
+@register_model
+def efun_s_plus(pretrained=False, **kwargs):
+    """ eFUN-S+ """
+    # NOTE for train, drop_rate should be 0.2, drop_path_rate should be 0.2
+    model = _gen_efun(
+        'eFUN-S+', channel_multiplier=1.0, depth_multiplier=1.0, pretrained=pretrained, **kwargs)
     return model
