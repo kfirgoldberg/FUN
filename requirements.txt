@@ -1,3 +1,4 @@
 torch>=1.4.0
 torchvision>=0.5.0
+jpeg2dct>-0.2.4
 pyyaml

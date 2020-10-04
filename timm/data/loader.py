@@ -130,6 +130,7 @@ def create_loader(
         input_size,
         batch_size,
         is_training=False,
+        dct=False,
         use_prefetcher=True,
         no_aug=False,
         re_prob=0.,
@@ -162,6 +163,7 @@ def create_loader(
     dataset.transform = create_transform(
         input_size,
         is_training=is_training,
+        dct=dct,
         use_prefetcher=use_prefetcher,
         no_aug=no_aug,
         scale=scale,

@@ -3,6 +3,7 @@ from .densenet import *
 from .dla import *
 from .dpn import *
 from .efficientnet import *
+from .eFUN import *
 from .gluon_resnet import *
 from .gluon_xception import *
 from .hrnet import *
@@ -24,7 +25,6 @@ from .tresnet import *
 from .vovnet import *
 from .xception import *
 from .xception_aligned import *
-
 from .factory import create_model
 from .helpers import load_checkpoint, resume_checkpoint
 from .layers import TestTimePoolHead, apply_test_time_pool

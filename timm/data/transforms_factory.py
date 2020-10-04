@@ -12,6 +12,7 @@ from timm.data.constants import IMAGENET_DEFAULT_MEAN, IMAGENET_DEFAULT_STD, DEF
 from timm.data.auto_augment import rand_augment_transform, augment_and_mix_transform, auto_augment_transform
 from timm.data.transforms import _pil_interp, RandomResizedCropAndInterpolation, ToNumpy, ToTensor
 from timm.data.random_erasing import RandomErasing
+from timm.data.rgb_to_dct import DCT, rgb2ycbcr
 
 
 def transforms_noaug_train(
@@ -57,6 +58,7 @@ def transforms_imagenet_train(
         re_mode='const',
         re_count=1,
         re_num_splits=0,
+        dct=False,
         separate=False,
 ):
     """
@@ -67,7 +69,7 @@ def transforms_imagenet_train(
      * normalizes and converts the branches above with the third, final transform
     """
     scale = tuple(scale or (0.08, 1.0))  # default imagenet scale range
-    ratio = tuple(ratio or (3./4., 4./3.))  # default imagenet ratio range
+    ratio = tuple(ratio or (3. / 4., 4. / 3.))  # default imagenet ratio range
     primary_tfl = [
         RandomResizedCropAndInterpolation(img_size, scale=scale, ratio=ratio, interpolation=interpolation)]
     if hflip > 0.:
@@ -111,15 +113,19 @@ def transforms_imagenet_train(
         # prefetcher and collate will handle tensor conversion and norm
         final_tfl += [ToNumpy()]
     else:
-        final_tfl += [
-            transforms.ToTensor(),
-            transforms.Normalize(
-                mean=torch.tensor(mean),
-                std=torch.tensor(std))
-        ]
-        if re_prob > 0.:
-            final_tfl.append(
-                RandomErasing(re_prob, mode=re_mode, max_count=re_count, num_splits=re_num_splits, device='cpu'))
+        if dct:
+            dct = DCT(normalize=False)
+            final_tfl += [transforms.ToTensor(), dct]
+        else:
+            final_tfl += [
+                transforms.ToTensor(),
+                transforms.Normalize(
+                    mean=torch.tensor(mean),
+                    std=torch.tensor(std))
+            ]
+            if re_prob > 0.:
+                final_tfl.append(
+                    RandomErasing(re_prob, mode=re_mode, max_count=re_count, num_splits=re_num_splits, device='cpu'))
 
     if separate:
         return transforms.Compose(primary_tfl), transforms.Compose(secondary_tfl), transforms.Compose(final_tfl)
@@ -132,6 +138,7 @@ def transforms_imagenet_eval(
         crop_pct=None,
         interpolation='bilinear',
         use_prefetcher=False,
+        dct=False,
         mean=IMAGENET_DEFAULT_MEAN,
         std=IMAGENET_DEFAULT_STD):
     crop_pct = crop_pct or DEFAULT_CROP_PCT
@@ -154,12 +161,16 @@ def transforms_imagenet_eval(
         # prefetcher and collate will handle tensor conversion and norm
         tfl += [ToNumpy()]
     else:
-        tfl += [
-            transforms.ToTensor(),
-            transforms.Normalize(
-                     mean=torch.tensor(mean),
-                     std=torch.tensor(std))
-        ]
+        if dct:
+            dct = DCT(normalize=False)
+            tfl += [transforms.ToTensor(), dct]
+        else:
+            tfl += [
+                transforms.ToTensor(),
+                transforms.Normalize(
+                    mean=torch.tensor(mean),
+                    std=torch.tensor(std))
+            ]
 
     return transforms.Compose(tfl)
 
@@ -168,6 +179,7 @@ def create_transform(
         input_size,
         is_training=False,
         use_prefetcher=False,
+        dct=False,
         no_aug=False,
         scale=None,
         ratio=None,
@@ -185,7 +197,6 @@ def create_transform(
         crop_pct=None,
         tf_preprocessing=False,
         separate=False):
-
     if isinstance(input_size, tuple):
         img_size = input_size[-2:]
     else:
@@ -210,6 +221,7 @@ def create_transform(
                 img_size,
                 scale=scale,
                 ratio=ratio,
+                dct=dct,
                 hflip=hflip,
                 vflip=vflip,
                 color_jitter=color_jitter,
@@ -229,6 +241,7 @@ def create_transform(
                 img_size,
                 interpolation=interpolation,
                 use_prefetcher=use_prefetcher,
+                dct=dct,
                 mean=mean,
                 std=std,
                 crop_pct=crop_pct)

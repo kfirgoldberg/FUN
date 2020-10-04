@@ -68,6 +68,7 @@ parser.add_argument('data', metavar='DIR',
                     help='path to dataset')
 parser.add_argument('--model', default='resnet101', type=str, metavar='MODEL',
                     help='Name of model to train (default: "countception"')
+parser.add_argument('--dct', action='store_true', help='use DCT representation of the images (when using FUN models)'),
 parser.add_argument('--pretrained', action='store_true', default=False,
                     help='Start with pretrained version of specified network (if avail)')
 parser.add_argument('--initial-checkpoint', default='', type=str, metavar='PATH',
@@ -461,6 +462,7 @@ def main():
     loader_train = create_loader(
         dataset_train,
         input_size=data_config['input_size'],
+        dct=args.dct,
         batch_size=args.batch_size,
         is_training=True,
         use_prefetcher=args.prefetcher,
@@ -497,6 +499,7 @@ def main():
     loader_eval = create_loader(
         dataset_eval,
         input_size=data_config['input_size'],
+        dct=args.dct,
         batch_size=args.validation_batch_size_multiplier * args.batch_size,
         is_training=False,
         use_prefetcher=args.prefetcher,
