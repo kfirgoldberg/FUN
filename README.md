@@ -8,7 +8,8 @@
 </p>
 
 ## Description   
-Official Implementation of our eFUN models, for training and evaluation
+Official Implementation of our eFUN models, for training and evaluation.
+Based on the [implementation by Ross Wightman](https://github.com/rwightman/pytorch-image-models) 
 
 ## Recent Updates
  bla bla bla
