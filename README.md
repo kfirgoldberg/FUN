@@ -2,11 +2,9 @@
 
 > The search for efficient neural network architectures has gained much focus in recent years, where modern architectures focus not only on accuracy but also on inference time and model size. Here, we present FUN, a family of novel Frequency-domain Utilization Networks. These networks utilize the inherent efficiency of the frequency-domain by working directly in that domain, represented with the Discrete Cosine Transform. Using modern techniques and building blocks such as compound-scaling and inverted-residual layers we generate a set of such networks allowing one to balance between size, latency and accuracy while outperforming competing RGB-based models. Extensive evaluations verifies that our networks present strong alternatives to previous approaches. Moreover, we show that working in frequency domain allows for dynamic compression of the input at inference time without any explicit change to the architecture.
 
-<p align="center">
-<img src="docs/FUN/acc_vs_size.png" width="800px"/>
-</p>
-<p align="center">
-<img src="docs/FUN/acc_vs_latency.png" width="800px"/>
+<p float="left">
+  <img src="/docs/FUN/acc_vs_size.png" width="300" />
+  <img src="/docs/FUN/acc_vs_latency.png" width="300" />
 </p>
 
 ## Description   
