@@ -102,7 +102,8 @@ parser.add_argument('--real-labels', default='', type=str, metavar='FILENAME',
                     help='Real labels JSON file for imagenet evaluation')
 parser.add_argument('--valid-labels', default='', type=str, metavar='FILENAME',
                     help='Valid label indices txt file for validation of partial label space')
-
+parser.add_argument('--dct', action='store_true', default=False,
+                    help='use dct preprocess')
 
 def validate(args):
     # might as well try to validate something
@@ -133,7 +134,7 @@ def validate(args):
         scriptable=args.torchscript)
 
     if args.checkpoint:
-        load_checkpoint(model, args.checkpoint, args.use_ema)
+        load_checkpoint(model, args.checkpoint, args.use_ema, strict=False)
 
     param_count = sum([m.numel() for m in model.parameters()])
     _logger.info('Model %s created, param count: %d' % (args.model, param_count))
@@ -185,6 +186,7 @@ def validate(args):
         std=data_config['std'],
         num_workers=args.workers,
         crop_pct=crop_pct,
+        dct=args.dct,
         pin_memory=args.pin_mem,
         tf_preprocessing=args.tf_preprocessing)
 
@@ -196,7 +198,11 @@ def validate(args):
     model.eval()
     with torch.no_grad():
         # warmup, reduce variability of first batch time, especially for comparing torchscript vs non
-        input = torch.randn((args.batch_size,) + data_config['input_size']).cuda()
+        # input = torch.randn((args.batch_size,) + data_config['input_size']).cuda()
+        if args.dct:
+            input = torch.randn((args.batch_size,) + (192, 28, 28)).cuda()
+        else:
+            input = torch.randn((args.batch_size,) + data_config['input_size']).cuda()
         if args.channels_last:
             input = input.contiguous(memory_format=torch.channels_last)
         model(input)
