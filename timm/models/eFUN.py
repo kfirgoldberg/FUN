@@ -27,10 +27,10 @@ def _cfg(url='', **kwargs):
 
 
 default_cfgs = {
-    'eFUN': _cfg(),
-    'eFUN-L': _cfg(),
-    'eFUN-S': _cfg(),
-    'eFUN-S+': _cfg()
+    'eFUN': _cfg(url='https://drive.google.com/file/d/1PJqh98ZFkuTvY-bP_Ahr3II5_ea2BLFL/view?usp=sharing'),
+    'eFUN-L': _cfg(url='https://drive.google.com/file/d/1p3bzYJZcXfAOtBPb0G_aCYqYtUDA7I0i/view?usp=sharing'),
+    'eFUN-S': _cfg(url='https://drive.google.com/file/d/16jRPzDhNAADd8TcTa-ADIKkHjunkOpru/view?usp=sharing'),
+    'eFUN-S+': _cfg(url='https://drive.google.com/file/d/1DFuFt8HYOTu01b8W86a89KpvAQUqG2I7/view?usp=sharing')
 }
 
 _DEBUG = False
