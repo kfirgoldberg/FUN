@@ -228,7 +228,6 @@ Files added specifically for eFUN are marked in **bold**
 | &boxv;&nbsp; &boxvr;&nbsp; scheduler | Folder with implementations of different training schedulers
 | &boxv;&nbsp; &boxvr;&nbsp; utils | Folder with implementations of utility functions
 
-| <img width=300> | <img>
 
 ## TODOs
 - [ ] sota-bench integration 
