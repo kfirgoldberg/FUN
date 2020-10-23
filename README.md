@@ -207,6 +207,8 @@ python validate.py\
 ```
 
 ## Repository structure
+Files added specifically for eFUN are marked in **bold** 
+
 | Path | Description <img width=200>
 | :--- | :---
 | FUN | Repository root folder
