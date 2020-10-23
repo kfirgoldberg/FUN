@@ -11,6 +11,7 @@
 
 ## Description   
 Official PyTorch implementation of "Rethinking FUN: Frequency-domain Utilization Networks".
+
 Based on the [implementation by Ross Wightman](https://github.com/rwightman/pytorch-image-models) 
 
 ## Recent Updates
