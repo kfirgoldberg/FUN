@@ -50,7 +50,11 @@ Training and validation data should be organized in the following structure:
             * images
         * class_name_b
             * images
-        ...
+            .
+        
+            .
+        
+            .
     * validation
         * class_name_a
             * images
