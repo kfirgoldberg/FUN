@@ -44,7 +44,8 @@ Pretrained models are available for download
 
 ### Training
 #### Preparing your data
-Training and validation data should be organized in the following structure: 
+Training and validation data should be organized in the following structure:
+``` 
 * data_dir
     * train
         * class_name_a
@@ -68,15 +69,17 @@ Training and validation data should be organized in the following structure:
             .
         
             .
+```
 #### Command line
-**eFUN**
+
 ```
 ./distributed_train.sh \
- 4\
+ <number of abailable GPUs>\
  <data_dir>\
  --output <desired output path>\
  --dct\ 
- --model efun\
+ --model <efun/efun_l/efun_s/efun_s_plus>\
+ --drop-path <0.2/0.2/0.2/0.3>\
  --no-prefetcher\
  -b 128\
  --sched step\
@@ -89,7 +92,6 @@ Training and validation data should be organized in the following structure:
  --warmup-lr 1e-6\
  --weight-decay 1e-5\
  --drop 0.2\ 
- --drop-path 0.2\
  --model-ema\
  --model-ema-decay 0.9999\ 
  --remode pixel\
@@ -97,93 +99,10 @@ Training and validation data should be organized in the following structure:
  --lr .048
 ```
 
-**eFUN-L**
-```
-./distributed_train.sh\
- 4\
- <data_dir>\
- --output <desired output path>\
- --dct\
- --model efun_l\
- --no-prefetcher\
- -b 112\
- --sched step\
- --epochs 450\
- --decay-epochs 2.4\
- --decay-rate .97\
- --opt rmsproptf\
- --opt-eps .001\
- -j 8\
- --warmup-lr 1e-6\
- --weight-decay 1e-5\
- --drop 0.2\
- --drop-path 0.3\
- --model-ema\
- --model-ema-decay 0.9999\
- --remode pixel\
- --reprob 0.2\
- --lr .048
-```
-
-**eFUN-S**
-```
-./distributed_train.sh\
- 4\
- <data_dir>\
- --output <desired output path>\
- --dct\
- --model efun_s\
- --no-prefetcher\
- -b 128\
- --sched step\
- --epochs 450\
- --decay-epochs 2.4\
- --decay-rate .97\
- --opt rmsproptf\
- --opt-eps .001\
- -j 8\
- --warmup-lr 1e-6\
- --weight-decay 1e-5\
- --drop 0.2\
- --drop-path 0.2\
- --model-ema\
- --model-ema-decay 0.9999\
- --remode pixel\
- --reprob 0.2\
- --lr .048
-```
-
-**eFUN-S+**
-```
-./distributed_train.sh\
- 4\
- <data_dir>\
- --output <desired output path>\
- --dct\
- --model efun_s_plus\
- --no-prefetcher\
- -b 128\
- --sched step\
- --epochs 450\
- --decay-epochs 2.4\
- --decay-rate .97\
- --opt rmsproptf\
- --opt-eps .001\
- -j 8\
- --warmup-lr 1e-6\
- --weight-decay 1e-5\
- --drop 0.2\
- --drop-path 0.2\
- --model-ema\
- --model-ema-decay 0.9999\
- --remode pixel\
- --reprob 0.2\
- --lr .048
-```
-
 ### Testing
 #### Preparing your data
-Training and validation data should be organized in the following structure: 
+Training and validation data should be organized in the following structure:
+``` 
 * data_dir
     * class_name_a
         * images
@@ -195,6 +114,7 @@ Training and validation data should be organized in the following structure:
         .
     
         .
+```
 #### Command line
 ```
 python validate.py\
