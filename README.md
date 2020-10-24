@@ -130,7 +130,7 @@ python validate.py\
 ## Repository structure
 Files added specifically for eFUN are marked in **bold** 
 
-| Path | Description <img width=200>
+| Path <img width=300> | Description <img width=300>
 | :--- | :---
 | FUN | Repository root folder
 | &boxvr;&nbsp; convert | Folder containing code for conversion from MXNET weights
